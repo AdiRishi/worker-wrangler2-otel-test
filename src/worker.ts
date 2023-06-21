@@ -1,9 +1,10 @@
-import { PartialTraceConfig, instrument } from '@microlabs/otel-cf-workers';
+import { TraceConfig, instrument } from '@microlabs/otel-cf-workers';
 
 export interface Env {}
 
 const handler = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    const req = await fetch('https://www.google.com');
     return new Response(JSON.stringify({ hello: 'world' }), {
       status: 200,
       headers: {
@@ -13,7 +14,7 @@ const handler = {
   },
 };
 
-const config: PartialTraceConfig = {
+const config: TraceConfig = {
   exporter: {
     url: 'https://api.honeycomb.io',
     headers: {
